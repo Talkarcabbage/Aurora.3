@@ -15,6 +15,10 @@
 		<div class="statusValue">
 			{{:helper.round(data.storedCapacity)}}%
 		</div>
+		<br>
+		<div class="statusValue">
+			{{:data.currentChargekWh}} kWh / {{:data.capacitykWh}} kWh 
+		</div>
 	</div>
 </div>
 
@@ -64,7 +68,7 @@
 			{{:helper.link('MIN', null, {'input' : 'min'}, (data.chargeLevel > 0) ? null : 'disabled')}}
 			{{:helper.link('SET', null, {'input' : 'set'}, null)}}			
 			{{:helper.link('MAX', null, {'input' : 'max'}, (data.chargeLevel < data.chargeMax) ? null : 'disabled')}}
-			<div style="float: left; width: 100px; text-align: center;">&nbsp;{{:data.chargeLevel}} W&nbsp;</div>
+			<div style="float: left; width: 100px; text-align: center;">&nbsp;{{:data.chargeLevel}} kW&nbsp;</div>
 		</div>
 </div>
 
@@ -75,7 +79,7 @@
 	<div class="itemContent">
 		{{:helper.displayBar(data.charge_taken, 0, data.chargeMax, (data.charge_taken < data.chargeLevel) ? 'average' : 'good')}}
 		<div class="statusValue">
-			{{:data.charge_taken}} W
+			{{:data.charge_taken}} kW
 		</div>
 	</div>
 </div>
@@ -108,7 +112,7 @@
 			{{:helper.link('MIN', null, {'output' : 'min'}, (data.outputLevel > 0) ? null : 'disabled')}}
 			{{:helper.link('SET', null, {'output' : 'set'}, null)}}			
 			{{:helper.link('MAX', null, {'output' : 'max'}, (data.outputLevel < data.outputMax) ? null : 'disabled')}}
-			<div style="float: left; width: 100px; text-align: center;">&nbsp;{{:data.outputLevel}} W&nbsp;</div>			
+			<div style="float: left; width: 100px; text-align: center;">&nbsp;{{:data.outputLevel}} kW&nbsp;</div>
 		</div>
 	</div>
 </div>
@@ -120,7 +124,7 @@
 	<div class="itemContent">
 		{{:helper.displayBar(data.outputLoad, 0, data.outputMax, (data.outputLoad < data.outputLevel) ? 'good' : 'average')}}
 		<div class="statusValue">
-			{{:data.outputLoad}} W
+			{{:data.outputLoad}} kW
 		</div>
 	</div>
 </div>

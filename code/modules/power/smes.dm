@@ -365,18 +365,19 @@
 		data["storedCapacity"] = 0
 	data["charging"] = inputting
 	data["chargeMode"] = input_attempt
-	data["chargeLevel"] = input_level
-	data["chargeMax"] = input_level_max
-	data["charge_taken"] = round(input_taken)
+	data["chargeLevel"] = input_level/1000 //kW
+	data["chargeMax"] = input_level_max/1000 //kW
+	data["charge_taken"] = round(input_taken/1000, 0.1) //kW
 	data["outputOnline"] = output_attempt
-	data["outputLevel"] = output_level
-	data["outputMax"] = output_level_max
-	data["outputLoad"] = round(output_used)
+	data["outputLevel"] = output_level/1000 //kW
+	data["outputMax"] = output_level_max/1000 //kW
+	data["outputLoad"] = round(output_used/1000, 0.1) //kw
 	data["failTime"] = failure_timer * 2
 	data["outputting"] = outputting
 	data["time"] = time
 	data["charge_mode"] = charge_mode
-
+	data["capacitykWh"] = round(capacity/100000, 0.1) //Divided by 100,000 to get kWh
+	data["currentChargekWh"] = round(charge/100000, 0.1) //Divided by 100,000 to get kWh
 
 	// update the ui if it exists, returns null if no ui is passed/found
 	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
@@ -415,8 +416,8 @@
 			if("max")
 				input_level = input_level_max
 			if("set")
-				input_level = input(usr, "Enter new input level (0-[input_level_max])", "SMES Input Power Control", input_level) as num
-		input_level = max(0, min(input_level_max, input_level))	// clamp to range
+				input_level = input(usr, "Enter new input level in kW (0-[input_level_max/1000])", "SMES Input Power Control", input_level/1000) as num //Take inputs in kW
+		input_level = max(0, min(input_level_max, input_level*1000))	// clamp to range
 
 	else if( href_list["output"] )
 		switch( href_list["output"] )
@@ -425,8 +426,8 @@
 			if("max")
 				output_level = output_level_max
 			if("set")
-				output_level = input(usr, "Enter new output level (0-[output_level_max])", "SMES Output Power Control", output_level) as num
-		output_level = max(0, min(output_level_max, output_level))	// clamp to range
+				output_level = input(usr, "Enter new output level in kW (0-[output_level_max/1000])", "SMES Output Power Control", output_level/1000) as num //Take inputs in kW
+		output_level = max(0, min(output_level_max, output_level*1000))	// clamp to range
 
 	investigate_log("input/output; <font color='[input_level>output_level?"green":"red"][input_level]/[output_level]</font> | Output-mode: [output_attempt?"<font color='green'>on</font>":"<font color='red'>off</font>"] | Input-mode: [input_attempt?"<font color='green'>auto</font>":"<font color='red'>off</font>"] by [usr.key]","singulo")
 
