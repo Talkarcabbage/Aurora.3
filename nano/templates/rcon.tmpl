@@ -16,23 +16,23 @@
 				<table>
 					<tr><td colspan=2>
 					{{if value.charge > 50}}
-						{{:helper.displayBar(value.charge, 0, 100, 'good')}}
+						{{:helper.displayBar(value.charge, 0, 100, 'good', value.chargekWh + '/' + value.capacitykWh + ' kWh')}}
 					{{else value.charge > 25}}
-						{{:helper.displayBar(value.charge, 0, 100, 'average')}}
+						{{:helper.displayBar(value.charge, 0, 100, 'average', value.chargekWh + '/' + value.capacitykWh + ' kWh')}}
 					{{else}}
-						{{:helper.displayBar(value.charge, 0, 100, 'bad')}}
+						{{:helper.displayBar(value.charge, 0, 100, 'bad', value.chargekWh + '/' + value.capacitykWh + ' kWh')}}
 					{{/if}}
 						<div class="statusValue">
 							{{:value.charge}}%<br>
 						</div>
 					{{if !data.hide_smes_details}}
 						<tr><td>
-						Input: {{:value.input_val}}W - {{:value.input_set ? "AUTO" : "OFF"}}
+						Input: {{:value.input_val}}kW - {{:value.input_set ? "AUTO" : "OFF"}}
 						<td>
 						{{:helper.link('', 'power', { 'smes_in_toggle' : value.RCON_tag})}}
 						{{:helper.link('', 'pencil', { 'smes_in_set' : value.RCON_tag})}}
 						<tr><td>
-						Output: {{:value.output_val}}W - {{:value.output_set ? "ONLINE" : "OFFLINE"}}
+						Output: {{:value.output_val}}kW - {{:value.output_set ? "ONLINE" : "OFFLINE"}}
 						<td>
 						{{:helper.link('', 'power', { 'smes_out_toggle' : value.RCON_tag})}}
 						{{:helper.link('', 'pencil', { 'smes_out_set' : value.RCON_tag})}}
@@ -40,7 +40,7 @@
 						<tr><td>
 						Output Load: 
 						<td>
-						{{:value.output_load}}W
+						{{:value.output_load}}kW
 					{{/if}}
 				</table>
 			</div>
