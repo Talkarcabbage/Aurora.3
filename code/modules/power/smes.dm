@@ -209,6 +209,8 @@
 		else
 			target_load = 0 // We won't input any power without powernet connection.
 		inputting = 0
+	else
+		input_taken = 0 // Power input doesn't happen if the switch is off, so the SMES display never updates to reflect this. 
 
 	//outputting
 	if(output_attempt && (!output_pulsed && !output_cut) && powernet && charge)
@@ -416,8 +418,8 @@
 			if("max")
 				input_level = input_level_max
 			if("set")
-				input_level = input(usr, "Enter new input level in kW (0-[input_level_max/1000])", "SMES Input Power Control", input_level/1000) as num //Take inputs in kW
-		input_level = max(0, min(input_level_max, input_level*1000))	// clamp to range
+				input_level = (input(usr, "Enter new input level in kW (0-[input_level_max/1000])", "SMES Input Power Control", input_level/1000) as num) * 1000 //Take inputs in kW, logic tweaked to match bay
+		input_level = max(0, min(input_level_max, input_level))	// clamp to range
 
 	else if( href_list["output"] )
 		switch( href_list["output"] )
@@ -426,8 +428,8 @@
 			if("max")
 				output_level = output_level_max
 			if("set")
-				output_level = input(usr, "Enter new output level in kW (0-[output_level_max/1000])", "SMES Output Power Control", output_level/1000) as num //Take inputs in kW
-		output_level = max(0, min(output_level_max, output_level*1000))	// clamp to range
+				output_level = (input(usr, "Enter new output level in kW (0-[output_level_max/1000])", "SMES Output Power Control", output_level/1000) as num) * 1000 //Take inputs in kW
+		output_level = max(0, min(output_level_max, output_level))	// clamp to range
 
 	investigate_log("input/output; <font color='[input_level>output_level?"green":"red"][input_level]/[output_level]</font> | Output-mode: [output_attempt?"<font color='green'>on</font>":"<font color='red'>off</font>"] | Input-mode: [input_attempt?"<font color='green'>auto</font>":"<font color='red'>off</font>"] by [usr.key]","singulo")
 
