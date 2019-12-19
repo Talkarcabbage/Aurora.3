@@ -40,3 +40,4 @@ delete-after: True
 changes: 
   - rscadd: "Added kilowatt hour capacity readouts to SMES and RCON view."
   - tweak: "Redesign SMES views to display and input values in kilowatts."
+  - bugfix: "Fix a longstanding bug that prevented the SMES input progress bar from updating if switched off."
