@@ -37,6 +37,15 @@
 		new /datum/computer_file/program/rcon_console(),
 		new /datum/computer_file/program/camera_monitor(),
 		new /datum/computer_file/program/lighting_control()
+		new/datum/computer_file/program/filemanager(),
+		new/datum/computer_file/program/chatclient(),
+		new/datum/computer_file/program/civilian/cargoorder(),
+		new/datum/computer_file/program/power_monitor(),
+		new/datum/computer_file/program/alarm_monitor(),
+		new/datum/computer_file/program/atmos_control(),
+		new/datum/computer_file/program/rcon_vue(),
+		new/datum/computer_file/program/camera_monitor(),
+		new/datum/computer_file/program/lighting_control()
 	)
 	return _prg_list
 
@@ -60,6 +69,16 @@
 		new /datum/computer_file/program/camera_monitor(),
 		new /datum/computer_file/program/lighting_control(),
 		new /datum/computer_file/program/records/employment()
+		new/datum/computer_file/program/filemanager(),
+		new/datum/computer_file/program/chatclient(),
+		new/datum/computer_file/program/civilian/cargoorder(),
+		new/datum/computer_file/program/power_monitor(),
+		new/datum/computer_file/program/alarm_monitor(),
+		new/datum/computer_file/program/atmos_control(),
+		new/datum/computer_file/program/rcon_vue(),
+		new/datum/computer_file/program/camera_monitor(),
+		new/datum/computer_file/program/lighting_control(),
+		new/datum/computer_file/program/records/employment()
 	)
 	return _prg_list
 

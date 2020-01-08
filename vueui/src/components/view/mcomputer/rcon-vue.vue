@@ -84,6 +84,7 @@ export default {
 	width: 55px;
 }
 .iobutton {
+	margin-top: 1px;
 	width: 32px;
 	margin-right: 15px;
 }
@@ -97,6 +98,7 @@ export default {
 	width: 20px;
 }
 .setButtonArea {
+	margin-top: 1px;
 	display: inline-block;
 	text-align: right;
 }
