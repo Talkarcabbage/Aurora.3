@@ -1,6 +1,7 @@
 <template>
   <div class="displayBar">
-    <div class="displayBarFill" :style="{ width: percentage + '%'}"><span><slot/></span></div>
+    <div class="displayBarFill" :style="{ width: percentage + '%'}"></div>
+    <span class="contentSpan"><slot/></span>
   </div>
 </template>
 
@@ -33,9 +34,27 @@ export default {
     line-height: 1em;
     white-space: nowrap;
     overflow: visible;
-    span {
-      vertical-align: middle;
-      margin-left: 2px;
-    }
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    float: left;
+  }
+  .contentSpan {
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+    line-height: 1em;
+    width: 100%;
+    font-weight: normal;
+  }
+  .displayBar {
+    height: 18px;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
   }
 </style>

@@ -168,6 +168,18 @@
             background: #40628a;
             color: #ffffff;
         }
+        &.good .contentSpan {
+            color: #ffffff;
+        }
+        &.average .contentSpan {
+            color: #ffffff;
+        }
+        &.bad .contentSpan {
+            color: #ffffff;
+        }
+        &.highlight .contentSpan {
+            color: #ffffff;
+        }
         &.good .displayBarFill {
             background: #4f7529;
         }
