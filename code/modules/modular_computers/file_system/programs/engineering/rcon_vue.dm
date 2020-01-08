@@ -1,5 +1,5 @@
 /datum/computer_file/program/rcon_vue
-	filename = "rcon-vue"
+	filename = "rcon"
 	filedesc = "RCON Remote Control"
 	program_icon_state = "generic"
 	extended_desc = "This program allows remote control of power distribution systems around the station. This program can not be run on tablet computers."

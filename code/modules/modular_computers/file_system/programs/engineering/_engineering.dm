@@ -76,21 +76,6 @@
 	size = 17
 	color = LIGHT_COLOR_CYAN
 
-/datum/computer_file/program/rcon_console
-	filename = "rcon"
-	filedesc = "RCON Remote Control"
-	nanomodule_path = /datum/nano_module/rcon
-	program_icon_state = "generic"
-	extended_desc = "This program allows remote control of power distribution systems around the station. This program can not be run on tablet computers."
-	required_access_run = access_engine
-	required_access_download = access_ce
-	requires_ntnet = 1
-	network_destination = "RCON remote control system"
-	requires_ntnet_feature = NTNET_SYSTEMCONTROL
-	usage_flags = PROGRAM_CONSOLE | PROGRAM_SILICON
-	size = 19
-	color = LIGHT_COLOR_GREEN
-
 // Night-Mode Toggle for CE
 /datum/computer_file/program/lighting_control
 	filename = "lightctrl"
