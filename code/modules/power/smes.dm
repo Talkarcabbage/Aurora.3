@@ -184,9 +184,19 @@
 	last_time = world.time
 	time = ((time_secs / 3600) > 1) ? ("[round(time_secs / 3600)] hours, [round((time_secs % 3600) / 60)] minutes") : ("[round(time_secs / 60)] minutes, [round(time_secs % 60)] seconds")
 
+// Update UI based on whether we have powernets, to optimize when we pull the data
+// Phase 0==machinery_process()  1==input_power to charge  2==restore() to outputting
+/obj/machinery/power/smes/proc/update_ui_by_powernet(var/phase) 
+	if (phase==0 && !powernet)
+		SSvueui.check_uis_for_change(src)
+	else if (phase==1 && !powernet)
+		SSvueui.check_uis_for_change(src)
+	else if (phase==2) 
+		SSvueui.check_uis_for_change(src)
+
 /obj/machinery/power/smes/machinery_process()
+	var/will_input=FALSE
 	if(stat & BROKEN)	return
-	SSvueui.check_uis_for_change(src) // We need to use the previous round of data or else the output value is wrong. Alternative is sending the data 2-3 times per power tick.
 	if(failure_timer)	// Disabled by gridcheck.
 		failure_timer--
 		return
@@ -208,11 +218,13 @@
 		if(terminal && terminal.powernet)
 			terminal.powernet.smes_demand += target_load
 			terminal.powernet.inputting.Add(src)
+			will_input = TRUE
 		else
 			target_load = 0 // We won't input any power without powernet connection.
+			input_taken=0
 		inputting = 0
 	else
-		input_taken=0 // Power input doesn't happen/isn't called if we aren't trying to input. Without this, the UI assumes we are still charging based on the last charge received.
+		input_taken=0 // Power input isn't called if we aren't trying to input. Without this, the UI assumes we are still charging based on the last charge received.
 
 	//outputting
 	if(output_attempt && (!output_pulsed && !output_cut) && powernet && charge)
@@ -220,12 +232,14 @@
 		charge -= output_used*SMESRATE		// reduce the storage (may be recovered in /restore() if excessive)
 		add_avail(output_used)				// add output to powernet (smes side)
 		outputting = 2
-	else if(!powernet || !charge)
+	else if((!powernet || !charge) && output_attempt)
 		outputting = 1
 		output_used=0 // Like input_taken, UI doesn't update used-value to 0 if no charge present or output is broken.
 	else
 		outputting = 0
 		output_used=0
+	if (!will_input)
+		update_ui_by_powernet(0)
 
 // called after all power processes are finished
 // restores charge level to smes if there was excess this ptick
@@ -252,7 +266,6 @@
 
 	if(clev != chargedisplay() ) //if needed updates the icons overlay
 		update_icon()
-	SSvueui.check_uis_for_change(src) // This point should have the ideal state of the UI, but this proc is not always called.
 	return
 
 //Will return 1 on failure
@@ -392,7 +405,7 @@
 	var/datum/vueui/ui = SSvueui.get_open_ui(user, src)
 	if (!ui)
 		ui = new(user, src, "misc-smes", 540, 420, (name_tag ? name_tag : "SMES"))
-		ui.data=vueui_data_change(list(), user, ui)
+	ui.data=vueui_data_change(list(), user, ui)
 	ui.open()
 
 /obj/machinery/power/smes/proc/Percentage()
