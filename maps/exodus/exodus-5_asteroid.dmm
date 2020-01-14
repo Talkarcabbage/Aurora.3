@@ -6905,7 +6905,7 @@
 /area/outpost/research/eva)
 "nF" = (
 /obj/machinery/power/smes/buildable/outpost_substation{
-	charge = 500000;
+	charge = 5000;
 	input_attempt = 1;
 	input_level = 150000;
 	output_attempt = 1;
@@ -9411,7 +9411,7 @@
 /area/outpost/engineering/meeting)
 "rY" = (
 /obj/machinery/power/smes/buildable/outpost_substation{
-	charge = 500000;
+	charge = 5000;
 	input_attempt = 1;
 	input_level = 150000;
 	output_attempt = 1;

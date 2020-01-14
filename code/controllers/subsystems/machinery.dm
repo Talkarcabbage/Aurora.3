@@ -7,6 +7,7 @@
 	priority = SS_PRIORITY_MACHINERY
 	init_order = SS_INIT_MACHINERY
 	flags = SS_POST_FIRE_TIMING
+	wait = MACHINERY_TICKRATE // Defined in code\__defines\machinery.dm as it affects power math calculations
 
 	var/tmp/list/all_machines = list()        // A list of all machines. Including the non-processing ones.
 	var/tmp/list/processing_machines = list() // A list of machines that process.

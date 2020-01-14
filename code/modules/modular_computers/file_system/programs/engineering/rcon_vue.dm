@@ -41,8 +41,8 @@
 			load_acc=0.1
 		smeslist.Add(list(list(
 		"charge_percentage" = round(SMES.Percentage()),
-		"charge" = round(SMES.charge/100000, 0.1), //kWh
-		"capacity" = SMES.capacity/100000,
+		"charge" = round(SMES.charge/1000, 0.1), //kWh
+		"capacity" = SMES.capacity/1000,
 		"input_set" = SMES.input_attempt,
 		"input_val" = SMES.input_level/1000, //kW
 		"output_set" = SMES.output_attempt,

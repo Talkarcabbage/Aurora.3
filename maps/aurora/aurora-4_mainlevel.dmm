@@ -5719,7 +5719,7 @@
 /area/maintenance/atmos_control)
 "alt" = (
 /obj/machinery/power/smes/buildable{
-	charge = 2e+006;
+	charge = 20000;
 	input_attempt = 1;
 	output_attempt = 1;
 	RCon_tag = "Substation - Atmospherics"
@@ -7247,7 +7247,7 @@
 /area/engineering/engine_room)
 "aoC" = (
 /obj/machinery/power/smes/buildable{
-	charge = 1e+007;
+	charge = 100000;
 	cur_coils = 4;
 	input_attempt = 1;
 	input_level = 500000;
@@ -9454,7 +9454,7 @@
 /area/engineering/engine_room)
 "asu" = (
 /obj/machinery/power/smes/buildable{
-	charge = 2e+006;
+	charge = 30000;
 	input_attempt = 1;
 	input_level = 100000;
 	is_critical = 1;

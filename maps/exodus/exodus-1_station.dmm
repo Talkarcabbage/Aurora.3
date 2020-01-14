@@ -71664,7 +71664,7 @@
 	icon_state = "0-8"
 	},
 /obj/machinery/power/smes/buildable{
-	charge = 2e+006;
+	charge = 30000;
 	input_attempt = 1;
 	output_attempt = 1;
 	RCon_tag = "Substation - Atmospherics"
@@ -75391,7 +75391,7 @@
 /area/engineering/drone_fabrication)
 "cHd" = (
 /obj/machinery/power/smes/buildable{
-	charge = 1e+007;
+	charge = 40000;
 	cur_coils = 4;
 	input_attempt = 1;
 	input_level = 500000;
@@ -75889,7 +75889,7 @@
 	icon_state = "0-4"
 	},
 /obj/machinery/power/smes/buildable{
-	charge = 2e+006;
+	charge = 30000;
 	input_attempt = 1;
 	input_level = 100000;
 	output_attempt = 1;

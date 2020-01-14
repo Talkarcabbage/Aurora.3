@@ -1,9 +1,9 @@
 // the SMES
 // stores power
 
-#define SMESRATE 0.05
-#define SMESMAXCHARGELEVEL 250000
-#define SMESMAXOUTPUT 250000
+#define SMESRATE (1 / ( 3600 / (MACHINERY_TICKRATE/10) )) // Watt hour capacity storage
+#define SMESMAXCHARGELEVEL 250 KILOWATTS
+#define SMESMAXOUTPUT 250 KILOWATTS
 
 //Cache defines
 #define SMES_CLEVEL_1		1
@@ -27,20 +27,20 @@
 	use_power = 0
 	clicksound = "switch"
 
-	var/capacity = 5e6 // maximum charge
-	var/charge = 1e6 // actual charge
+	var/capacity = 50 KILOWATTS // maximum charge
+	var/charge = 10 KILOWATTS // actual charge
 
-	var/input_attempt = 0 			// 1 = attempting to charge, 0 = not attempting to charge
-	var/inputting = 0 				// 1 = actually inputting, 0 = not inputting
-	var/input_level = 50000 		// amount of power the SMES attempts to charge by
-	var/input_level_max = 200000 	// cap on input_level
-	var/input_taken = 0 			// amount that we received from powernet last tick
+	var/input_attempt = 0 				// 1 = attempting to charge, 0 = not attempting to charge
+	var/inputting = 0 					// 1 = actually inputting, 0 = not inputting
+	var/input_level = 50 KILOWATTS		// amount of power the SMES attempts to charge by
+	var/input_level_max = 200 KILOWATTS	// cap on input_level
+	var/input_taken = 0 				// amount that we received from powernet last tick
 
-	var/output_attempt = 0 			// 1 = attempting to output, 0 = not attempting to output
-	var/outputting = 0 				// 2 = actually outputting, 1 or 0 = not outputting
-	var/output_level = 50000		// amount of power the SMES attempts to output
-	var/output_level_max = 200000	// cap on output_level
-	var/output_used = 0				// amount of power actually outputted. may be less than output_level if the powernet returns excess power
+	var/output_attempt = 0 					// 1 = attempting to output, 0 = not attempting to output
+	var/outputting = 0 						// 2 = actually outputting, 1 or 0 = not outputting
+	var/output_level = 50 KILOWATTS			// amount of power the SMES attempts to output
+	var/output_level_max = 200 KILOWATTS	// cap on output_level
+	var/output_used = 0						// amount of power actually outputted. may be less than output_level if the powernet returns excess power
 
 	//Holders for powerout event.
 	//var/last_output_attempt	= 0
@@ -173,7 +173,7 @@
 
 	var/goal = (delta_power < 0) ? (charge) : (capacity - charge)
 
-	var/time_secs = (delta_power) ? ((goal / abs(delta_power)) * (round(world.time - last_time) / 10)) : (0)
+	var/time_secs = (delta_power) ? ((goal / abs(delta_power)) * (MACHINERY_TICKRATE / 10)) : (0)
 	// If it is negative - we are discharging
 	if(delta_power < 0)
 		charge_mode = 0
@@ -394,8 +394,8 @@
 	VUEUI_SET_CHECK(data["output_used"], round(output_used/1000, output_accuracy), ., data)
 	VUEUI_SET_CHECK(data["time"], time, ., data)
 	VUEUI_SET_CHECK(data["charge_load_ratio"], charge_mode, ., data) // I believe this is 0=negative gain, 1=positive gain, 2=equal gain/discharge?
-	VUEUI_SET_CHECK(data["capacity"], round(capacity/100000, 0.1), ., data) //kWh based on baystation.
-	VUEUI_SET_CHECK(data["capacity_stored"], round(charge/100000, 0.1), ., data)
+	VUEUI_SET_CHECK(data["capacity"], round(capacity/1000, 0.1), ., data) //kWh based on baystation.
+	VUEUI_SET_CHECK(data["capacity_stored"], round(charge/1000, 0.1), ., data)
 	VUEUI_SET_CHECK(data["failure_timer"], failure_timer * 2, ., data)
 
 /obj/machinery/power/smes/ui_interact(mob/user)

@@ -1024,12 +1024,12 @@
 /area/outpost/research/anomaly_storage)
 "acm" = (
 /obj/machinery/power/smes/buildable{
-	charge = 2e+006;
+	charge = 30000;
 	input_attempt = 1;
-	input_level_max = 350000;
+	input_level_max = 250000;
 	is_critical = 1;
 	output_attempt = 1;
-	output_level_max = 350000;
+	output_level_max = 250000;
 	RCon_tag = "Tesla - Containment"
 	},
 /obj/structure/cable{
@@ -7985,7 +7985,7 @@
 	icon_state = "motion0"
 	},
 /obj/machinery/power/smes/buildable{
-	charge = 5e+006;
+	charge = 50000;
 	input_attempt = 1;
 	input_level = 200000;
 	output_attempt = 1;
@@ -30640,7 +30640,7 @@
 /area/engineering/bathroom)
 "huY" = (
 /obj/machinery/power/smes/buildable{
-	charge = 1e+007;
+	charge = 100000;
 	cur_coils = 4;
 	input_attempt = 1;
 	input_level = 500000;

@@ -18,7 +18,7 @@
 /area/turret_protected/corp_vault)
 "e" = (
 /obj/machinery/power/smes/buildable{
-	charge = 5e+006;
+	charge = 50000;
 	input_attempt = 0;
 	input_level = 200000;
 	output_attempt = 1;
