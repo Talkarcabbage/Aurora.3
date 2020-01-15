@@ -61,3 +61,7 @@
 		var/datum/powernet/PN = thing
 
 		PN.reset()
+
+/datum/controller/subsystem/power/proc/update_smes_uis()
+	for(var/obj/machinery/power/smes/buildable/SMES in smes_units)
+		SSvueui.check_uis_for_change(SMES)

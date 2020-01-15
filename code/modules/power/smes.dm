@@ -184,18 +184,7 @@
 	last_time = world.time
 	time = ((time_secs / 3600) > 1) ? ("[round(time_secs / 3600)] hours, [round((time_secs % 3600) / 60)] minutes") : ("[round(time_secs / 60)] minutes, [round(time_secs % 60)] seconds")
 
-// Update UI based on whether we have powernets, to optimize when we pull the data
-// Phase 0==machinery_process()  1==input_power to charge  2==restore() to outputting
-/obj/machinery/power/smes/proc/update_ui_by_powernet(var/phase) 
-	if (phase==0 && !powernet)
-		SSvueui.check_uis_for_change(src)
-	else if (phase==1 && !powernet)
-		SSvueui.check_uis_for_change(src)
-	else if (phase==2) 
-		SSvueui.check_uis_for_change(src)
-
 /obj/machinery/power/smes/machinery_process()
-	var/will_input=FALSE
 	if(stat & BROKEN)	return
 	if(failure_timer)	// Disabled by gridcheck.
 		failure_timer--
@@ -218,7 +207,6 @@
 		if(terminal && terminal.powernet)
 			terminal.powernet.smes_demand += target_load
 			terminal.powernet.inputting.Add(src)
-			will_input = TRUE
 		else
 			target_load = 0 // We won't input any power without powernet connection.
 			input_taken=0
@@ -238,8 +226,6 @@
 	else
 		outputting = 0
 		output_used=0
-	if (!will_input)
-		update_ui_by_powernet(0)
 
 // called after all power processes are finished
 // restores charge level to smes if there was excess this ptick

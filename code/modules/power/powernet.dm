@@ -124,7 +124,6 @@
 		var/smes_input_percentage = between(0, (netexcess / smes_demand) * 100, 100)
 		for(var/obj/machinery/power/smes/S in inputting)
 			S.input_power(smes_input_percentage)
-			S.update_ui_by_powernet(1)
 
 	netexcess = avail - load
 
@@ -132,10 +131,6 @@
 		var/perc = get_percent_load(1)
 		for(var/obj/machinery/power/smes/S in nodes)
 			S.restore(perc)
-			S.update_ui_by_powernet(2)
-	else
-		for(var/obj/machinery/power/smes/S in nodes)
-			S.update_ui_by_powernet(2)
 
 	//updates the viewed load (as seen on power computers)
 	viewload = round(load)

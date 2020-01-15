@@ -35,10 +35,7 @@
 	var/list/smeslist[0]
 	var/load_acc = 0.1
 	for(var/obj/machinery/power/smes/buildable/SMES in SSpower.rcon_smes_units)
-		if (SMES.output_used < 100000)
-			load_acc=0.01
-		else
-			load_acc=0.1
+		load_acc = (SMES.output_used<100000 ? 0.01 : 0.1)
 		smeslist.Add(list(list(
 		"charge_percentage" = round(SMES.Percentage()),
 		"charge" = round(SMES.charge/1000, 0.1), //kWh

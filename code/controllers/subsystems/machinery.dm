@@ -157,6 +157,7 @@
 	if (!powernets_reset_yet)
 		SSpower.reset_powernets()
 		powernets_reset_yet = TRUE
+		SSpower.update_smes_uis()
 
 	while (curr_powersinks.len)
 		var/obj/item/I = curr_powersinks[curr_powersinks.len]
