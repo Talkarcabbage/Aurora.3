@@ -49,7 +49,7 @@ export default {
     font-weight: normal;
   }
   .displayBar {
-    height: 18px;
+    height: 1.5em;
     position: relative;
     display: flex;
     overflow: hidden;

@@ -133,10 +133,10 @@ export default {
 <style lang="scss" scoped>
 .setButton {
   display: inline-block;
-  width: 31px;
+  width: 2.6em;
 }
 .displayBar {
-	width: 297px;
+	width: 24.8em;
 }
 .whiteText {
 	color: white;
@@ -144,7 +144,7 @@ export default {
 .button {
 	&.on, &.selected {
 		background: #5e9653;
-		border: 1px solid #161616;
+		border: 0.083em solid #161616;
 		&:hover {
 			background: #5e9653;
 		}

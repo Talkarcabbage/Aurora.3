@@ -19,7 +19,7 @@ export default {
     },
     width: {
       type: String,
-      default: "150px"
+      default: "12.5em"
     }
   },
   computed: {
@@ -42,6 +42,6 @@ div.item {
 }
 
 .itemLabel {
-  padding-right: 8px;
+  padding-right: 0.67em;
 }
 </style>

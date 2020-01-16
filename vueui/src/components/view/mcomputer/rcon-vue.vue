@@ -9,7 +9,7 @@
       <vui-group>
         <div v-for="smes in state.smeslist" :key="smes.uuid">
           <div v-show="filteredSMES.indexOf(smes)>=0">
-            <vui-fw-group-item width="180px" :label="smes.RCON_tag">
+            <vui-fw-group-item width="15em" :label="smes.RCON_tag">
               <vui-progress :min="0" :class="capacityLoadClass(smes.charge, smes.capacity)" :value="smes.charge" :max="smes.capacity">{{smes.charge}} / {{smes.capacity}} kWh - {{smes.charge_percentage}}%</vui-progress>
               <span v-show="showControls">
                 <span class="iolabel">Input:</span>
@@ -88,27 +88,28 @@ export default {
 		},
 		showBreakersToggle() {
 			this.showBreakers = !this.showBreakers
-		}
+		},
+		
 	}
 };
 </script>
 
 <style lang="scss" scoped>
 .lessItemPadding /deep/ .itemLabel {
-	padding-right: 1px;
+	padding-right: 0.125em;
 }
 .displayBar {
-	width: 317px;
-	height: 20px;
+	width: 26.4em;
+	height: 1.67em;
 }
 .iolabel {
 	display: inline-block;
-	width: 55px;
+	width: 4.5em;
 }
 .iobutton {
-	margin-top: 1px;
-	width: 32px;
-	margin-right: 15px;
+	margin-top: 0.083em;
+	width: 2.67em;
+	margin-right: 1.25em;
 }
 .adjustbutton{
 	width: 10px;
@@ -120,12 +121,12 @@ export default {
 	width: 20px;
 }
 .setButtonArea {
-	margin-top: 1px;
+	margin-top: 0.083em;
 	display: inline-block;
 	text-align: right;
 }
 .outputLoadLabel {
-	margin-bottom: 10px;
+	margin-bottom: 0.75em;
 }
 .ioRed {
 	background: #ff0000;
@@ -146,8 +147,8 @@ export default {
 	}
 }
 .breakerButton {
-	margin-top: 4px;
-	width: 70px;
+	margin-top: 0.33em;
+	width: 6em;
 	border-color: black;
 	font-weight: bold;
 }
