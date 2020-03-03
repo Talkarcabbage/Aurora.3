@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="notice" v-if="failure_timer">
+    <div class="notice" v-if="state.failure_timer">
       <b><h3 class="whiteText">SYSTEM FAILURE</h3></b>
       I/O regulators malfunction detected! Waiting for system reboot... 
       <br>
-      Automatic reboot in {{failure_timer}} seconds...<br>
+      Automatic reboot in {{state.failure_timer}} seconds...<br>
       <vui-button icon="trash" class="whiteText" :params="{ reboot: 'reboot' }">Reboot Now</vui-button>
       <br> 
     </div>
@@ -12,10 +12,10 @@
       <!-- CHARGE STATUS -->
       <vui-group>
         <vui-fw-group-item label="Stored Capacity:">
-          <vui-progress :class="capacityLoadClass" :value="percentage_stored">{{capacity_stored}} / {{capacity}} kWh - {{percentage_stored}}% </vui-progress>
+          <vui-progress :class="capacityLoadClass" :value="state.percentage_stored">{{state.capacity_stored}} / {{state.capacity}} kWh - {{state.percentage_stored}}% </vui-progress>
         </vui-fw-group-item>
         <vui-fw-group-item label="Charge Status:">
-          <span>{{chargeTypeString}}</span>
+          <span>{{state.chargeTypeString}}</span>
         </vui-fw-group-item>
       </vui-group>
 
@@ -23,28 +23,32 @@
       <h3>Input Management</h3>
       <vui-group>
         <vui-fw-group-item label="Charge Mode:">
-          <vui-button :params="{ c_attempt: 'auto' }" :class="input_attempt ? 'selected' : '' " :disabled="input_attempt==1">Auto</vui-button>
-          <vui-button :params="{ c_attempt: 'off' }" :class="input_attempt ? '' : 'selected' " :disabled="input_attempt==0">Off</vui-button>
-          [<span class="bad" v-if="chargeQualityValue==0">Not charging</span>
-          <span class="good" v-else-if="chargeQualityValue==2">Charging</span>
+          <vui-button :params="{ c_attempt: 'auto' }" :class="state.input_attempt ? 'selected' : '' " :disabled="state.input_attempt==1">Auto</vui-button>
+          <vui-button :params="{ c_attempt: 'off' }" :class="state.input_attempt ? '' : 'selected' " :disabled="state.input_attempt==0">Off</vui-button>
+          [<span class="bad" v-if="state.chargeQualityValue==0">Not charging</span>
+          <span class="good" v-else-if="state.chargeQualityValue==2">Charging</span>
           <span class="average" v-else>Partially charging</span>]
         </vui-fw-group-item>
         <vui-fw-group-item label="Input Level:">
-          <vui-progress :min="0" :value="input_level" :max="input_level_max"><span>{{input_level}} / {{input_level_max}} kW</span></vui-progress>
+          <vui-progress :min="0" :value="state.input_level" :max="state.input_level_max"><span>{{state.input_level}} / {{state.input_level_max}} kW</span></vui-progress>
         </vui-fw-group-item>
       </vui-group>
       <vui-group>
-        <vui-fw-group-item>
-          <vui-button class="setButton" :disabled="input_level==0" :params="{ input: 'min' }">MIN</vui-button>
-          <vui-button class="setButton" :disabled="input_level==0" :params="{ input: '-100' }">-100</vui-button>
-          <vui-button class="setButton" :disabled="input_level==0" :params="{ input: '-10' }">-10</vui-button>
+        <vui-fw-group-item v-if="false">
+          <vui-button class="setButton" :disabled="state.input_level==0" :params="{ input: 'min' }">MIN</vui-button>
+          <vui-button class="setButton" :disabled="state.input_level==0" :params="{ input: '-100' }">-100</vui-button>
+          <vui-button class="setButton" :disabled="state.input_level==0" :params="{ input: '-10' }">-10</vui-button>
           <vui-button class="setButton" :params="{ input: 'set' }">SET</vui-button>
-          <vui-button class="setButton" :disabled="input_level==input_level_max" :params="{ input: '+10' }">+10</vui-button>
-          <vui-button class="setButton" :disabled="input_level==input_level_max" :params="{ input: '+100' }">+100</vui-button>
-          <vui-button class="setButton" :disabled="input_level==input_level_max" :params="{ input: 'max' }">MAX</vui-button>
+          <vui-button class="setButton" :disabled="state.input_level==state.input_level_max" :params="{ input: '+10' }">+10</vui-button>
+          <vui-button class="setButton" :disabled="state.input_level==state.input_level_max" :params="{ input: '+100' }">+100</vui-button>
+          <vui-button class="setButton" :disabled="state.input_level==state.input_level_max" :params="{ input: 'max' }">MAX</vui-button>
+        </vui-fw-group-item>
+        <vui-fw-group-item>
+          <vui-input-numeric-client :show-min-max="true" width="5em" :min="0" :max="state.input_level_max" v-model="valueToSet" v-on:enter-pressed="onSubmit( { set_input: {value: valueToSet} })" />
+          <vui-button :params="{set_input: {value: valueToSet} }" style="margin-left: 0.9em">Apply</vui-button>
         </vui-fw-group-item>
         <vui-fw-group-item label="Input Load:">
-          <vui-progress :class="inputLoadClass" :min="0" :value="input_taken" :max="input_level_max"><span>{{input_taken}} kW</span></vui-progress>
+          <vui-progress :class="inputLoadClass" :min="Number(0)" :value="state.input_taken" :max="state.input_level_max"><span>{{state.input_taken}} kW</span></vui-progress>
         </vui-fw-group-item>
       </vui-group>
 
@@ -52,28 +56,28 @@
       <h3>Output Management</h3>
       <vui-group>
         <vui-fw-group-item label="Output Mode:">
-          <vui-button :params="{ o_attempt: 'on' }" v-bind:class="output_attempt ? 'selected' : '' " v-bind:disabled="output_attempt==1">On</vui-button>
-          <vui-button :params="{ o_attempt: 'off' }" v-bind:class="output_attempt ? '' : 'selected' " v-bind:disabled="output_attempt==0">Off</vui-button>
-          [<span v-if="is_outputting==2" class="good">Outputting</span>
-          <span v-else-if="is_outputting==1" class="average">Disconnected or No Charge</span>
+          <vui-button :params="{ o_attempt: 'on' }" v-bind:class="state.output_attempt ? 'selected' : '' " v-bind:disabled="state.output_attempt==1">On</vui-button>
+          <vui-button :params="{ o_attempt: 'off' }" v-bind:class="state.output_attempt ? '' : 'selected' " v-bind:disabled="state.output_attempt==0">Off</vui-button>
+          [<span v-if="state.is_outputting==2" class="good">Outputting</span>
+          <span v-else-if="state.is_outputting==1" class="average">Disconnected or No Charge</span>
           <span v-else class="bad">Not outputting</span>]
         </vui-fw-group-item>
         <vui-fw-group-item label="Output Level:">
-          <vui-progress :min="0" :value="output_level" :max="output_level_max"><span>{{output_level}} / {{output_level_max}} kW</span></vui-progress>
+          <vui-progress :min="0" :value="state.output_level" :max="state.output_level_max"><span>{{state.output_level}} / {{state.output_level_max}} kW</span></vui-progress>
         </vui-fw-group-item>
       </vui-group>
       <vui-group>
         <vui-fw-group-item>
-          <vui-button class="setButton" v-bind:disabled="output_level==0" :params="{ output: 'min' }">MIN</vui-button>
-          <vui-button class="setButton" v-bind:disabled="output_level==0" :params="{ output: '-100' }">-100</vui-button>
-          <vui-button class="setButton" v-bind:disabled="output_level==0" :params="{ output: '-10' }">-10</vui-button>
+          <vui-button class="setButton" v-bind:disabled="state.output_level==0" :params="{ output: 'min' }">MIN</vui-button>
+          <vui-button class="setButton" v-bind:disabled="state.output_level==0" :params="{ output: '-100' }">-100</vui-button>
+          <vui-button class="setButton" v-bind:disabled="state.output_level==0" :params="{ output: '-10' }">-10</vui-button>
           <vui-button class="setButton" :params="{ output: 'set' }">SET</vui-button>
-          <vui-button class="setButton" v-bind:disabled="output_level==output_level_max" :params="{ output: '+10' }">+10</vui-button>
-          <vui-button class="setButton" v-bind:disabled="output_level==output_level_max" :params="{ output: '+100' }">+100</vui-button>
-          <vui-button class="setButton" v-bind:disabled="output_level==output_level_max" :params="{ output: 'max' }">MAX</vui-button>
+          <vui-button class="setButton" v-bind:disabled="state.output_level==state.output_level_max" :params="{ output: '+10' }">+10</vui-button>
+          <vui-button class="setButton" v-bind:disabled="state.output_level==state.output_level_max" :params="{ output: '+100' }">+100</vui-button>
+          <vui-button class="setButton" v-bind:disabled="state.output_level==state.output_level_max" :params="{ output: 'max' }">MAX</vui-button>
         </vui-fw-group-item>
         <vui-fw-group-item label="Output Load:">
-          <vui-progress :class="outputLoadClass" :min="0" :value="output_used" :max="output_level_max"><span>{{output_used}} kW</span></vui-progress>
+          <vui-progress :class="outputLoadClass" :min="0" :value="state.output_used" :max="state.output_level_max"><span>{{state.output_used}} kW</span></vui-progress>
         </vui-fw-group-item>
       </vui-group>
     </div>
@@ -81,9 +85,13 @@
 </template>
 
 <script>
+import Utils from '../../../utils.js'
 export default {
   data() {
-    return this.$root.$data.state; // Make data more easily accessible
+    return {
+      state: this.$root.$data.state,
+      valueToSet: this.$root.$data.state.input_level
+    }// Make data more easily accessible
   },
   computed: {
 		chargeTypeString() {
@@ -126,8 +134,13 @@ export default {
 			if (used<setting*0.8) return "good";
 			return "average";
 		}
-	},
-  }; 
+  }, 
+  methods: {
+    onSubmit(params) {
+      Utils.sendToTopic(params)
+    }
+  }
+ }; 
 </script>
 
 <style lang="scss" scoped>
